@@ -4,10 +4,8 @@ FILE: parser_modified.py
 Author: Firas Abuzaid (fabuzaid@stanford.edu)
 Author: Perth Charernwattanagul (puch@stanford.edu)
 Modified: 04/21/2014
-
 Skeleton parser for CS564 programming project 1. Has useful imports and
 functions for parsing, including:
-
 1) Directory handling -- the parser takes a list of eBay json files
 and opens each file inside of a loop. You just need to fill in the rest.
 2) Dollar value conversions -- the json files store dollar value amounts in
@@ -16,7 +14,6 @@ like XXXXX.xx.
 3) Date/time conversions -- the json files store dates/ times in the form
 Mon-DD-YY HH:MM:SS -- we wrote a function (transformDttm) that converts to the
 for YYYY-MM-DD HH:MM:SS, which will sort chronologically in SQL.
-
 Your job is to implement the parseJson function, which is invoked on each file by
 the main function. We create the initial Python dictionary object of items for
 you; the rest is up to you!
@@ -141,32 +138,24 @@ def parseJson(json_file):
                     bidsFile.write('\"' + bid['Bid']['Bidder']['UserID'].replace('\"', '\"\"') + '\"|')
                     bidsFile.write(transformDttm(bid['Bid']['Time']) + '|')
                     bidsFile.write(transformDollar(bid['Bid']['Amount']) + '\n')
+                    
+                    #for user file
+                    usersFile.write('\"' + bid['Bid']['Bidder']['UserID'].replace('\"', '\"\"') + '\"|')
+                    usersFile.write(bid['Bid']['Bidder']['Rating'] + '|')
+                    if 'Location' in bid['Bid']['Bidder'].keys():
+                        usersFile.write('\"' + bid['Bid']['Bidder']['Location'].replace('\"', '\"\"') + '\"|')
+                    else:
+                        usersFile.write('NULL'+ '|')
+                    if 'Country' in bid['Bid']['Bidder'].keys():
+                        usersFile.write('\"' + bid['Bid']['Bidder']['Country'] + '\"\n')
+                    else:
+                        usersFile.write('NULL' + '\n')
 
-                    # for bidder in user file
-                    info_dic = bid.get("Bid").get("Bidder")
-                temp_list.append(info_dic)
-
-            # for seller in user file
-            temp_seller = item.get("Seller")
-            if temp_seller is not None:
-                if "Country" in item.keys():
-                    temp_seller["Country"] = item.get("Country")
-                else:
-                    temp_seller["Country"] = "Null"
-
-                if "Location" in item.keys():
-                    temp_seller["Location"] = item.get("Location")
-                else:
-                    temp_seller["Location"] = "Null"
-                temp_list.append(temp_seller)
-
-        # write user info to usersFile
-        dat_file = "user.dat"
-        dat_columns = ["UserID", "Rating", "Country", "Location"]
-        for data in temp_list:
-            usersFile.write(
-                "\"{}\"|{}|\"{}\"|\"{}\"\n".format(data.get("UserID"), data.get("Rating"), data.get("Country"),
-                                                   data.get("Location")))
+            #for user file
+            usersFile.write('\"' + item['Seller']['UserID'].replace('\"', '\"\"') + '\"|')
+            usersFile.write(item['Seller']['Rating'] + '|')
+            usersFile.write('\"' + item['Location'].replace('\"', '\"\"') + '\"|')
+            usersFile.write('\"' + item['Country'].replace('\"', '\"\"') + '\"\n')
 
         itemFile.close()
         cateFile.close()
