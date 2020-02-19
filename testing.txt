@@ -1,0 +1,18 @@
+#!/bin/bash
+
+sh runParser.sh
+sqlite3 pp1.db < create.sql
+sqlite3 pp1.db < load.txt
+
+answers=(13422 80 8365 1046871451 3130 6717 150)
+
+for i in 1 2 3 4 5 6 7
+do
+  output=$(sqlite3 pp1.db < $(printf "query%s.sql" "$i"))
+  if [ "$output" -ne "${answers[$i - 1]}" ]
+  then
+    printf "Failed test %s. Got %s but expected %s.\n" "$i" "$output" "${answers[$i - 1]}"
+  else
+    printf "Success! Test %s passed.\n" "$i"
+  fi
+done
