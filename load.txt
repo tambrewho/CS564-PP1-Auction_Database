@@ -1,5 +1,9 @@
 .separator |
-.import bids_sorted.dat Bids
-.import categories_sorted.dat Categories
-.import users_sorted.dat Users
 .import items_sorted.dat Items
+update Items set Buy_Price = null where Buy_Price = 'NULL';
+update Items set Description = null where Description = 'NULL';
+.import users_sorted.dat Users
+.import categories_sorted.dat Categories
+.import bids_sorted.dat Bids
+update Users set Location = null where Location = 'NULL';
+update Users set Country = null where Country = 'NULL';
