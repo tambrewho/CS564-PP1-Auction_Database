@@ -1,4 +1,4 @@
 SELECT COUNT(*) as SameNumbers
-FROM(SELECT DISTINCT i.UserID
+FROM(SELECT DISTINCT i.SellerID
 FROM Items i, Bids b
-WHERE i.UserID = b.UserID);
+WHERE i.SellerID = b.BidderID);
