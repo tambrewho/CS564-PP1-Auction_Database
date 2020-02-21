@@ -1,4 +1,4 @@
-python parser_modified.py ebay_data/items-*.json
+python my_parser.py ebay_data/items-*.json
 
 sort bids.dat | uniq > bids_sorted.dat
 sort categories.dat | uniq > categories_sorted.dat
